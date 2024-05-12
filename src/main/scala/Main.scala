@@ -152,7 +152,7 @@ object Main {
     }
 
     // My original plan was to return a boolean, but it's useful to return a tuple of the cards that match, so I can process the stacks after.
-    private def getMatches(mode: GameMode, table: Seq[Player]): Option[(Card, Card)] = {
+    def getMatches(mode: GameMode, table: Seq[Player]): Option[(Card, Card)] = {
         // Get all the cards at the top of the stacks, some players may not have placed a card yet
         val cards = table.map(player => player.stack.headOption)
             .filter(card => card.isDefined)
@@ -164,7 +164,7 @@ object Main {
     }
 
     // Now we have the cards and the players, we need to deal the cards to the players hand.
-    private def dealCards(decks: Seq[Deck], players: Seq[Player]): Seq[Player] = {
+    def dealCards(decks: Seq[Deck], players: Seq[Player]): Seq[Player] = {
         val cards = decks flatMap { deck => deck.cards }
 
         // We need to split these evenly, we know how many players we have so this is simple.
