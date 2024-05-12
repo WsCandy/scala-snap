@@ -52,7 +52,29 @@ object Main {
         val players = for (i <- 0 until totalPlayers)
             yield Player.cpu(i)
 
-        println(decks)
-        println(players)
+        val dealt = dealCards(decks, players)
+
+        println(s"Decks: $decks")
+        println(s"Players: $players")
+        println(s"Cards Dealt: $dealt")
+    }
+
+    // Now we have the cards and the players, we need to deal the cards to the players hand.
+    private def dealCards(decks: Seq[Deck], players: Seq[Player]): Seq[Player] = {
+        val cards = decks flatMap { deck => deck.cards }
+
+        // We need to split these evenly, we know how many players we have so this is simple.
+        val discard = cards.length % players.length
+
+        // We then cards from the deck and deal those
+        val deal = cards.drop(discard)
+        val perPlayer = deal.size / players.size
+
+        // Rather than going around the table we just take chunks of the deck, they're shuffled so the end result is fine
+        for (i <- players.indices) yield {
+            val start = i * perPlayer
+            val cards = deal.slice(start, start + perPlayer)
+            players(i).placeInHand(cards: _*)
+        }
     }
 }

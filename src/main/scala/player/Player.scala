@@ -4,7 +4,12 @@ import card.Card
 
 import scala.util.Random
 
-case class Player(name: String, reaction: Double, hand: Seq[Card], stack: Seq[Card])
+case class Player(name: String, reaction: Double, hand: Seq[Card], stack: Seq[Card]) {
+    
+    def placeInHand(cards: Card*): Player = {
+        this.copy(hand = hand ++ cards)
+    }
+}
 
 // Following a similar pattern as the Deck object, I want some utility to create players
 object Player {
