@@ -121,9 +121,9 @@ object Main {
         }
 
         // Each player rolls a number, to see who reacted the fastest
-        val roles = players map { player => player.react }
+        val rolls = players map { player => player.react }
 
-        Some(players(roles.indexOf(roles.min)))
+        Some(players(rolls.indexOf(rolls.min)))
     }
 
     private def eliminatePlayers(players: Seq[Player]): Seq[Player] = {
@@ -166,7 +166,7 @@ object Main {
         // We need to split these evenly, we know how many players we have so this is simple.
         val discard = cards.length % players.length
 
-        // We then cards from the deck and deal those
+        // We then discard cards from the deck and deal those
         val deal = cards.drop(discard)
         val perPlayer = deal.size / players.size
 
