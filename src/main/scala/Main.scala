@@ -45,7 +45,7 @@ object Main {
         val totalDecks = 1
 
         val decks = for (_ <- 0 until totalDecks)
-            yield Deck.standard
+            yield Deck.standard.shuffled
 
         println(decks)
     }

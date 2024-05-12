@@ -2,7 +2,14 @@ package deck
 
 import card._
 
-case class Deck(cards: Card*)
+import scala.util.Random
+
+case class Deck(cards: Seq[Card]) {
+
+    def shuffled: Deck = {
+        this.copy(cards = Random.shuffle(cards))
+    }
+}
 
 object Deck {
 
@@ -11,7 +18,7 @@ object Deck {
         val values: Set[CardValue] = Set(Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King)
         val suits: Set[CardSuit] = Set(Spades, Hearts, Diamonds, Clubs)
 
-        Deck(create(values, suits): _*)
+        Deck(create(values, suits))
     }
 
     // This method can be used to support the creation of custom decks in the future.
