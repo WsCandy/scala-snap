@@ -1,8 +1,9 @@
 import card.Card
 import deck.Deck
-import game.{GameMode, SuitMode}
+import game.{GameMode, GameModeFactory}
 import player.Player
 
+import scala.io.StdIn
 import scala.util.Random
 
 /**
@@ -46,10 +47,18 @@ import scala.util.Random
 object Main {
 
     def main(args: Array[String]): Unit = {
-        // I'm adding these as static vars for now, but building with it in mind that these will be provided by the user.
-        val totalDecks = 1
-        val totalPlayers = 4
-        val mode = SuitMode
+        // I'm going to add some rudimentary input handling here, normally the input would be validated but due to time constraints I'm going to ignore that for now.
+        // This would be the number one thing I'd improve given more time.
+        println("How many decks do you want to play with? Please enter an integer.")
+        val totalDecks = StdIn.readInt()
+
+        println("\nHow many players do you want to play with? Please enter an integer.")
+        val totalPlayers = StdIn.readInt()
+
+        println("\nHow should the cards be matched? Please enter an integer.\n1. Value\n2. Suit\n3. Both")
+        val mode = GameModeFactory.construct(StdIn.readInt())
+
+        println(s"\nStarting the game with $totalDecks deck(s), $totalPlayers player(s), and a Game Mode of $mode.\n")
 
         val decks = for (_ <- 0 until totalDecks)
             yield Deck.standard.shuffled
@@ -58,11 +67,6 @@ object Main {
             yield Player.cpu(i)
 
         val dealt = dealCards(decks, players)
-
-        println(s"Decks: $decks\n")
-        println(s"Players: $players\n")
-        println(s"Cards Dealt: $dealt\n")
-
         val winner = playRound(mode, dealt, 0, 0)
 
         println(s"The winning player is... *drum roll* ${winner.name}!")
