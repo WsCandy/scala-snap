@@ -1,0 +1,20 @@
+name: Test
+on:
+  push:
+
+jobs:
+  test:
+    name: Scala - Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: corretto
+          java-version: 17
+      - name: Test
+        run: sbt test

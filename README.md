@@ -37,7 +37,6 @@ As this task was constrained by time then I wanted to focus on the core function
 - Add custom `Deck` types to have more varied game play.
 - Add a scoring system and track player scores during gameplay.
 - More comprehensive testing suite. The project is entirely functional and simple enough to test.
-- Add a CI pipeline to run the tests
 - Thorough user input validation. Selected settings can be stored in a `Settings` object and validated before the game starts.
 - A better experience on the CLI. Allow the user to select options from a list rather than free entry, provide default values etc.
 
