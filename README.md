@@ -1,64 +1,44 @@
-# Backend Technical Task
+# Snap!
+Snap is a fun card game you can play with your friends! This project however lets the computer play against itself!
 
-## Overview
-The goal of this task is not to produce the best implementation of the game, but for us to see your coding style
-and structure: how you form your code to solve the task and how easy it is to follow and reason from it.
+This game has been implemented in Scala 2.13.8 and has been written in a purely functional way. Overall time spent on this project was roughly ~2-3 hours. Please see the `Main.scala` file for details on the planning process.
 
-Please focus your time on making sure that the code is well structured and logically split, and that the flow is
-easy to understand and follow. In short, write in a form that you yourself would like to inherit a
-codebase.
+## Rules and Features
+This game takes in three user arguments when the program is run. You should answer the prompts with an `Int` in order for the program to function correctly. There is no validation on user input due to time constrains. So please bear this in mind and enter a positive `Int`.
 
-## The Assignment
+The game features the following:
 
-We would like you to write a command line app in Scala or Java. You are free to use just standard libraries, or
-any combination of others that will make the task easier for you, or cleaner. The problem is deliberately not
-too complex to focus on the things mentioned above.
+1. A variable number of players, specify as many as you like.
+2. A variable number of decks, as many as you like.
+3. 3 different game modes, match on `Value`, `Suit`, or `Both`!
+4. Randomisation - Each player has a reaction time that may help or hinder them in the game.
+5. Output as the game plays out. Although the game will play out almost instantly you can view logs of what transpired.
 
-The task is to simulate a game of snap between two or more computer players using standard playing card decks.
-These requirements should drive your solution in a way that will show us multiple facets of your coding style:
+> [!TIP]
+> The last player to run out of cards will win! So if you select `Both` and one `Deck` then a player will win be default.
 
-* The application should ask the user how many playing card decks to play
-* The application should ask the user whether cards should be matched: on suit, value, or both.
-* The application should shuffle the decks before play commences
-* The application should simulate a game of snap according to the rules below
-* The application should output the winner
-* You may choose single or multithreaded approach whichever suits you better, but do include some form of randomness
+## Running and Testing
+To run the project simply run the follow command in a shell of your choosing. This project was developed on MacOS using `sbt` so you will need to have it installed. `sbt` was backed by the following Java Version `Corretto 17.0.11`.
 
-### Rules of Snap
-* First, cards are split equally between players, discarding any excess cards
-* Then, each player takes turns placing a card from their hand onto a stack in front of them
-* When a card is placed and it matches any other stack, any player may call 'Snap!' (not necessarily the player with the matching stack)
-* When a player calls 'Snap!' they take all the cards in the matching stacks
-* A player is eliminated when they run out of cards
-* The game ends when there is only one player left
+```shell
+$ sbt run
+```
 
-### Optional Extensions
-* Support more than 2 players
-* Instead of always calling 'Snap!' when there are matching cards, have players "miss" a snap
-* Support an alternative stop condition where the game ends after all players have placed n cards (where n is taken from user input)
+To run the test suite simply run the following command:
 
-## Guidelines
-* We recommend you spend no more than 2 hours on the task.
-* Feel free to get it back to us however you like (GitHub, email, ...)
+```shell
+$ sbt test
+```
 
-Don't hesitate to get in touch if anything is unclear, or if you have any questions.
+## Future Improvements
+As this task was constrained by time then I wanted to focus on the core functionality and structure of the project rather than a variety of features. The structure in place allows us to add features easily in the future. Here are some ideas:
 
-## Your thoughts
+- Limit the number of rounds played, and call a draw, or declare a winner based on number of cards claimed by calling 'Snap!'.
+- Add custom `Deck` types to have more varied game play.
+- Add a scoring system and track player scores during gameplay.
+- More comprehensive testing suite. The project is entirely functional and simple enough to test.
+- Add a CI pipeline to run the tests
+- Thorough user input validation. Selected settings can be stored in a `Settings` object and validated before the game starts.
+- A better experience on the CLI. Allow the user to select options from a list rather than free entry, provide default values etc.
 
-We find it useful if you can document some of your thinking, including what you would improve given more time. known issues and how you would resolve them given more time. Technical decisions, design decisions, compromises.
-
-Please also add some comments to this file with instructions on how to run your project, and to document what platform and SDK versions you have tested it with.
-
-## This Template project
-
-This project is provided as a skeleton with some basic setup, to save you time, but you are free to add, modify or replace anything, as you prefer.
-
-It currently runs on Scala 2.13.8, and uses [ScalaTest](https://www.scalatest.org/), which supports multiple testing styles - feel free to use any style you prefer.
-
-### Running the project
-
-Run `sbt run` to run the Main class.
-
-You can also run `sbt ~run` to rerun on every file save.
-
-Running `sbt test` will run all tests.
+Please see the source files for commentary and explanation of the code.
