@@ -1,4 +1,6 @@
 # Snap!
+[![Test](https://github.com/WsCandy/scala-snap/actions/workflows/test.yml/badge.svg)](https://github.com/WsCandy/scala-snap/actions/workflows/test.yml)
+
 Snap is a fun card game you can play with your friends! This project however lets the computer play against itself!
 
 This game has been implemented in Scala 2.13.8 and has been written in a purely functional way. Overall time spent on this project was roughly ~2-3 hours. Please see the `Main.scala` file for details on the planning process.
