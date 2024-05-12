@@ -1,3 +1,5 @@
+import deck.Deck
+
 /**
  * I'm just going to use this section to write my initial thoughts.
  *
@@ -39,5 +41,12 @@
 object Main {
 
     def main(args: Array[String]): Unit = {
+        // I'm adding these as static vars for now, but building with it in mind that these will be provided by the user.
+        val totalDecks = 1
+
+        val decks = for (_ <- 0 until totalDecks)
+            yield Deck.standard
+
+        println(decks)
     }
 }
