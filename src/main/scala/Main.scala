@@ -170,6 +170,8 @@ object Main {
         // We need to split these evenly, we know how many players we have so this is simple.
         val discard = cards.length % players.length
 
+        println(s"$discard card(s) have been discarded.\n")
+
         // We then discard cards from the deck and deal those
         val deal = cards.drop(discard)
         val perPlayer = deal.size / players.size
