@@ -17,7 +17,7 @@ The game features the following:
 5. Output as the game plays out. Although the game will play out almost instantly you can view logs of what transpired.
 
 > [!TIP]
-> The last player to run out of cards will win! So if you select `Both` and one `Deck` then a player will win be default.
+> The last player to run out of cards will win! So if you select `Both` and one `Deck` then a player will win by default.
 
 ## Running and Testing
 To run the project simply run the follow command in a shell of your choosing. This project was developed on MacOS using `sbt` so you will need to have it installed. `sbt` was backed by the following Java Version `Corretto 17.0.11`.
