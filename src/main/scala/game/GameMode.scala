@@ -1,3 +1,7 @@
 package game
 
-trait GameMode
+import card.Card
+
+trait GameMode {
+    def selectMatches(cards: Card*): Option[(Card, Card)]
+}

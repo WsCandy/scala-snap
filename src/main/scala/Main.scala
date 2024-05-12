@@ -1,5 +1,9 @@
+import card.Card
 import deck.Deck
+import game.{GameMode, SuitMode}
 import player.Player
+
+import scala.util.Random
 
 /**
  * I'm just going to use this section to write my initial thoughts.
@@ -44,7 +48,8 @@ object Main {
     def main(args: Array[String]): Unit = {
         // I'm adding these as static vars for now, but building with it in mind that these will be provided by the user.
         val totalDecks = 1
-        val totalPlayers = 2
+        val totalPlayers = 4
+        val mode = SuitMode
 
         val decks = for (_ <- 0 until totalDecks)
             yield Deck.standard.shuffled
@@ -54,9 +59,104 @@ object Main {
 
         val dealt = dealCards(decks, players)
 
-        println(s"Decks: $decks")
-        println(s"Players: $players")
-        println(s"Cards Dealt: $dealt")
+        println(s"Decks: $decks\n")
+        println(s"Players: $players\n")
+        println(s"Cards Dealt: $dealt\n")
+
+        val winner = playRound(mode, dealt, 0, 0)
+
+        println(s"The winning player is... *drum roll* ${winner.name}!")
+    }
+
+    // This is the main gameplay loop, it will run recursively until there is only one player left.
+    // Breakdown:
+    // 1. If there is only one player, exit and declare them the winner
+    // 2. Player plays a card
+    // 3. Check if snap is called
+    // 4. If snap is called, redistribute cards
+    // 5. After distributing the cards, eliminate any players that have no cards left
+    // 5. If snap is not called, move to the next round (call the function again)
+    private def playRound(mode: GameMode, players: Seq[Player], turn: Int, round: Int): Player = {
+        if (players.size == 1) {
+            println(s"Game over after $round rounds!")
+            return players.head
+        }
+
+        // The table is the state of all the players after playing a card
+        val table = for (i <- players.indices) yield {
+            if (i == turn) players(i).playCard
+            else players(i)
+        }
+
+        val matches = getMatches(mode, table)
+
+        // End the round
+        if (matches.isEmpty) {
+            return endRound(mode, table, turn, round)
+        }
+
+        val winner = getRoundWinner(table)
+
+        if (winner.isEmpty) {
+            println(s"Oops, a snap was missed! - Match was ${matches.get}")
+            return endRound(mode, table, turn, round)
+        }
+
+        val cards = table flatMap { player => player.collectStackToppedWith(matches.get) }
+        println(s"${winner.get.name} says 'Snap!' and wins ${cards.size} cards!- Match was ${matches.get}")
+
+        // The winner collects the cards
+        val distributed = for (player <- table) yield {
+            if (player == winner.get) player.placeInHand(cards: _*).dropStackToppedWith(matches.get)
+            else player.dropStackToppedWith(matches.get)
+        }
+
+        endRound(mode, distributed, turn, round)
+    }
+
+    private def getRoundWinner(players: Seq[Player]): Option[Player] = {
+        // Let's add a small chance for there to be no winner
+        if (Random.between(1, 10) == 1) {
+            return None
+        }
+
+        // Each player rolls a number, to see who reacted the fastest
+        val roles = players map { player => player.react }
+
+        Some(players(roles.indexOf(roles.min)))
+    }
+
+    private def eliminatePlayers(players: Seq[Player]): Seq[Player] = {
+        players filter { player =>
+            if (player.hand.isEmpty) {
+                println(s"${player.name} has been eliminated!")
+            }
+
+            player.hand.nonEmpty
+        }
+    }
+
+    private def endRound(mode: GameMode, players: Seq[Player], turn: Int, round: Int): Player = {
+        val remaining = eliminatePlayers(players)
+        val next = nextTurn(remaining, turn)
+
+        playRound(mode, remaining, next, round + 1)
+    }
+
+    private def nextTurn(players: Seq[Player], turn: Int): Int = {
+        if (turn + 1 >= players.size) 0 else turn + 1
+    }
+
+    // My original plan was to return a boolean, but it's useful to return a tuple of the cards that match, so I can process the stacks after.
+    private def getMatches(mode: GameMode, table: Seq[Player]): Option[(Card, Card)] = {
+        // Get all the cards at the top of the stacks, some players may not have placed a card yet
+        val cards = table.map(player => player.stack.headOption)
+            .filter(card => card.isDefined)
+            .map(card => card.get)
+
+        // Each mode has different matching rules so let's contain that logic in the mode itself
+        // The implementation is crude, given more time this could be cleaned up
+        mode.selectMatches(cards: _*)
     }
 
     // Now we have the cards and the players, we need to deal the cards to the players hand.
